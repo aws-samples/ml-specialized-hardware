@@ -9,8 +9,8 @@ In this tutorial you'll learn how to create a people pathing mechanism that trac
 
 
 ### Notebooks:
- - [01_Yolov7SageMakerInferentia.ipynb]: First deploy a real-time endpoint on SageMaker on an Inferentia (inf1) instance, with the Object Detection & Pose estimation model.
- - [02_CVPipeline.ipynb]: Launch a SageMaker Processing Job with a Python script that defines a GStreamer pipeline that processes multiple files at once by sending each frame to the endpoint and saving the predictions as Numpy files.
+ - [01_Yolov7SageMakerInferentia](01_Yolov7SageMakerInferentia.ipynb): First deploy a real-time endpoint on SageMaker on an Inferentia (inf1) instance, with the Object Detection & Pose estimation model.
+ - [02_CVPipeline](02_CVPipeline.ipynb): Launch a SageMaker Processing Job with a Python script that defines a GStreamer pipeline that processes multiple files at once by sending each frame to the endpoint and saving the predictions as Numpy files.
 
 
 ### Activities
