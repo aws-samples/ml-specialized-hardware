@@ -6,11 +6,13 @@ Specialized Hardware is a ML (Machine Learning) model accelerator for Inference 
 
 If you're looking for technical samples that show how to run specific models on Trainium (trn1) and Inferentia (inf1 & inf2), go to [AWS Neuron Samples](https://github.com/aws-neuron/aws-neuron-samples)
 
-## Tutorials
+## Tutorials/Reference implementations
 |Use Case|Description|
 |-|-|
 |[How to track people in video files?](tutorials/ObjectTrackingSageMakerGStreamer/)|CV/ML Pipeline to process video files in batch with SageMaker+Inferentia, GStreamer and Yolov7+ByteTrack|
 |[How to measure the similarity between two sentences?](tutorials/EmbeddingsFromTextWithBert/)|Compute the semantic similarity of two or more sentences by extracting their embeddings with SageMaker+Inferentia and HF Bert Case|
 
-## Contribute
+## Contributing
 If you have a question related to a business challenge that must be answered by an accelerated AI/ML solution, like the content in this repo, then you can contribute. You can just open an issue with your question or if you have the skills, implement a solution (tutorial, workshop, etc.) using Jupyter notebooks (for SageMaker Studio or Notebook Instances) and create a pull request. We appreciate your help.
+
+Please refer to the [CONTRIBUTING](CONTRIBUTING.md) document for further details on contributing to this repository.
