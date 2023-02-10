@@ -1,6 +1,6 @@
 # Applied AI/ML Specialized Hardware
 
-Specialized Hardware is a ML (Machine Learning) model accelerator for Inference or Training, like [AWS Inferentia](https://aws.amazon.com/machine-learning/inferentia/), [AWS Trainium](https://aws.amazon.com/machine-learning/trainium/), [SIMD accel in CPUs](https://pt.wikipedia.org/wiki/SIMD) and GPUs. In this repo you'll find reference implementations of different use cases (applications) for Computer Vision, Natural Language Processing, etc. that make use of hardware acceleration to reduce model execution latency and increase throughput.
+Specialized Hardware is a ML (Machine Learning) model accelerator for Inference or Training, like [AWS Inferentia](https://aws.amazon.com/machine-learning/inferentia/), [AWS Trainium](https://aws.amazon.com/machine-learning/trainium/), [SIMD accel in CPUs](https://en.wikipedia.org/wiki/SIMD) and GPUs. In this repo you'll find reference implementations of different use cases (applications) for Computer Vision, Natural Language Processing, etc. that make use of hardware acceleration to reduce model execution latency and increase throughput.
 
 **Use cases** are represented by questions which can be answered by the reference implementation linked to it.
 
