@@ -61,7 +61,7 @@ def train(args, world_size, device):
     train_dataloader = DataLoader(train_dataset, collate_fn=collate_fn, batch_size=args.batch_size)
     train_dataloader = pl.MpDeviceLoader(train_dataloader, device)
 
-    best_path = os.path.join(args.checkpoints_path, 'best.pt')
+    best_path = os.path.join(args.checkpoints_path, args.model_name, 'best.pt')
     best_loss = float("inf")
     for epoch in range(args.num_epochs):
         model.train()
