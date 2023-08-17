@@ -77,7 +77,7 @@ Here you can find notebooks you can run on [Amazon SageMaker Studio](https://aws
 
 If you followed the steps in the previous sections, you have a running SageMaker real-time endpoint with your model. Now you can make use of [AWS SDK for SageMaker runtime](https://aws.amazon.com/developer/tools/) which offers libraries available for the most common programming languages. If your application is Python based, you can also make use of [Amazon SageMaker Inference API](https://sagemaker.readthedocs.io/en/stable/api/inference/index.html).
 
-## 3) Contributing
+## 5) Contributing
 If you have questions, comments, suggestions, etc. please feel free to cut tickets in this repo.
 
 Also, please refer to the [CONTRIBUTING](CONTRIBUTING.md) document for further details on contributing to this repository.
