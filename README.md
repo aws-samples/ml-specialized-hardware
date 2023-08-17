@@ -5,22 +5,18 @@ Supposing you have a **business challenge** to address which requires custom ML 
 
 In this tutorial you'll learn how to use [AWS Trainium](https://aws.amazon.com/machine-learning/trainium/) and [AWS Inferentia](https://aws.amazon.com/machine-learning/inferentia/) with [Amazon SageMaker](https://aws.amazon.com/sagemaker/) and [Hugging Face Optimum Neuron](https://huggingface.co/docs/optimum-neuron/index), to optimize your ML workloads! It has a **top-down** approach, which starts with the **use case/business challenge** identification/mapping and ends with a trained model deployed as an API which can be then integrated to your application. The picture bellow shows the proposed activities you need to follow in order to implement your solution:  
 
-<table>
-    <tr>
-        <td><img src="purpose-built-accelerators/docs/imgs/01_activities.png"></img></td>
-        <td>
-            <table>
-                <tr><td><strong>1) Use case identification:</strong></td><td>The first step of the process is to identify your use case. We prepared a table with a list of common use cases, framed as questions. The idea is to find the <b>Task</b> we'll use to address the problem.</td></tr>
-                <tr><td><strong>1.1) Task mapping:</strong></td><td>After identifying the use case/business challenge, using the **use cases table** or your own judgment, now it is time to prepare a model for that given <b>Task</b></td></tr>
-                <tr><td><strong>2) Model selection:</strong></td><td>There is a second table which lists all the current supported models and the <b>Tasks</b> it can implement. Use that table to select your model</td></tr>
-                <tr><td><strong>3) Model building:</strong></td><td>Now, you can make use of the available notebooks to run: 1/ Data Preparation; 2/ Model fine-tuning and 3/ Model deploying. If you already have a pre-trained model, you can skip steps 1 and 2</td></tr>
-                <tr><td><strong>4) App integration:</strong></td><td>In the previous step you deployed your model and it is now exposed as an API. Just integrate your application to this API and start using your model</td></tr>
-            </table>
-        </td>
-    </tr>
-</table>
+<p align="center">
+  <img src="purpose-built-accelerators/docs/imgs/01_activities.png"></img>
+</p>
 
- 
+<table>
+    <tr><td><strong>1) Use case identification:</strong></td><td>The first step of the process is to identify your use case. We prepared a table with a list of common use cases, framed as questions. The idea is to find the <b>Task</b> we'll use to address the problem.</td></tr>
+    <tr><td><strong>1.1) Task mapping:</strong></td><td>After identifying the use case/business challenge, using the **use cases table** or your own judgment, now it is time to prepare a model for that given <b>Task</b></td></tr>
+    <tr><td><strong>2) Model selection:</strong></td><td>There is a second table which lists all the current supported models and the <b>Tasks</b> it can implement. Use that table to select your model</td></tr>
+    <tr><td><strong>3) Model building:</strong></td><td>Now, you can make use of the available notebooks to run: 1/ Data Preparation; 2/ Model fine-tuning and 3/ Model deploying. If you already have a pre-trained model, you can skip steps 1 and 2</td></tr>
+    <tr><td><strong>4) App integration:</strong></td><td>In the previous step you deployed your model and it is now exposed as an API. Just integrate your application to this API and start using your model</td></tr>
+</table>
+            
 ## 1) Use case mapping
 
 The following table brings a list of common use cases (framed as questions) and their associated tasks. Use this table as a reference to idenfity which **Task** is the best option to address your problem. Frame your use **case/business challenge** as a question and try to find the most similar option in the table. Then, use the task associated to the mappend use case, in the second column, and follow the next steps. 
