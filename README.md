@@ -71,7 +71,7 @@ Here you can find notebooks you can run on [Amazon SageMaker Studio](https://aws
 |-|-|
 |[01 - Data Preparation](purpose-built-accelerators/notebooks/01_DatasetPreparation.ipynb)|How to load and prepare a dataset for fine-tuning a model|
 |[02 - Model Fine-tuning](purpose-built-accelerators/notebooks/02_ModelFineTuning.ipynb)|How to kick-off a fine-tuning job using the dataset prepared in the previous notebook|
-|03 - Model Deployment - coming soon|How to compile and deploy a pre-trained model to Inferentia|
+|[03 - Model Deployment](purpose-built-accelerators/notebooks/03_ModelInference.ipynb)|How to compile and deploy a pre-trained model to Inferentia|
 
 ## 4) App Integration
 
