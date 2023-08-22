@@ -25,11 +25,16 @@ The following table brings a list of common use cases (framed as questions) and 
 
 |Use case question|Task|
 |:-|:-|
-|How can I create a mechanism to answer FAQ based questions?|QuestionAnswering|
-|How to classify pictures of products into different classes?|ImageClassification|
+|How to create an auto-complete mechanism for my application?|CausalLM|
+|How to create a chat-bot to answer questions from an FAQ to my customers?|QuestionAnswering|
+|How can I summarize a long document into a few paragraphs?|CausalLM|
+|How can I create a spam classifier for my emails?|SequenceClassification|
 |How to check if a given text has a good or a bad comment?|SequenceClassification|
-|How to create a summary of a long text|ConditionalGeneration|
+|How do I translate documents from multiple languages to dutch?|CausalLM|
 |How to complete a sentence, given its initial words only|CausalLM|
+|How to classify pictures of products into different classes?|ImageClassification|
+|How to create an Alexa like mechanism which detects specific keywords?|AudioClassification|
+|How to create subtitles to audiobooks?|Text-To-Speech|
 |Given two sentences, how to make sure the second sentence is related to the first?|NextSentencePrediction|
 
 ### 1.1) Available Tasks
