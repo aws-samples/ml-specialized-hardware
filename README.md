@@ -38,7 +38,6 @@ The following table brings a list of common use cases (framed as questions) and 
 |Given two sentences, how to make sure the second sentence is related to the first?|NextSentencePrediction|
 
 ### 1.1) Available Tasks
-**optimum-neuron version: 0.0.8**
 
 |Training|Inference|
 |:-|:-|
