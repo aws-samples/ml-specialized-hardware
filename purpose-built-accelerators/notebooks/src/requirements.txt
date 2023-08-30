@@ -1,0 +1,9 @@
+datasets
+evaluate
+accelerate
+torchvision
+scikit-learn
+neuronx-distributed
+## 4.32 or higher is required
+transformers==4.32.0
+optimum-neuron==0.0.10
