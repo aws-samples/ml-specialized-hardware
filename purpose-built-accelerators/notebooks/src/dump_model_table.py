@@ -26,12 +26,12 @@ def training_models():
         if type(m) != str: m = m[0]
         if m=='gpt-2': m='gpt2' # fix the name
         model_id = len(data_training['Model'])
-        model_link = f'<a target="_new" href="https://huggingface.co/models?sort=trending&search={m}">{m}</a>'
+        model_link = f'<a rel="noopener noreferrer" target="_new" href="https://huggingface.co/models?sort=trending&search={m}">{m}</a>'
         data_training['Model'].append(f"{model_link} <font style='color: red;'><b>[TP]</b></font>" if m in tp_support else model_link)
         tasks = [re.sub(r'.+For(.+)', r'\1', t) for t in set(_generate_supported_model_class_names(m)) if not t.endswith('Model')]
         for t in tasks:
             if data_training.get(t) is None: data_training[t] = [''] * len(_SUPPORTED_MODEL_TYPES)
-            data_training[t][model_id] = f'<a target="_new" href="https://huggingface.co/docs/transformers/model_doc/{m}#transformers.{m.title()}For{t}">api</a>'        
+            data_training[t][model_id] = f'<a rel="noopener noreferrer" target="_new" href="https://huggingface.co/docs/transformers/model_doc/{m}#transformers.{m.title()}For{t}">doc</a>'        
     df_training = pd.DataFrame.from_dict(data_training).set_index('Model')
     return df_training.to_markdown()
     
@@ -44,11 +44,11 @@ def inference_models():
     data_inference = {'Model': []}
     for m,t in meta:
         model_id = len(data_inference['Model'])
-        model_link = f'<a target="_new" href="https://huggingface.co/models?sort=trending&search={m}">{m}</a>'
+        model_link = f'<a rel="noopener noreferrer" target="_new" href="https://huggingface.co/models?sort=trending&search={m}">{m}</a>'
         data_inference['Model'].append(f"{model_link} <font style='color: red;'><b>[TP]</b></font>" if m in tp_support else model_link)
         for task in t:
             if data_inference.get(task) is None: data_inference[task] = [''] * len(meta)
-            data_inference[task][model_id] = f'<a target="_new" href="https://huggingface.co/models?pipeline_tag={task}&sort=trending&search={m}">list</a>'
+            data_inference[task][model_id] = f'<a rel="noopener noreferrer" target="_new" href="https://huggingface.co/models?pipeline_tag={task}&sort=trending&search={m}">doc</a>'
 
     df_inference = pd.DataFrame.from_dict(data_inference).set_index('Model')
     return df_inference.to_markdown()
@@ -64,7 +64,7 @@ if __name__ == "__main__":
         print(f"Dumping the metadata file to: {args.output_file}")
         with open(args.output_file, 'w') as f:
             f.write("# HF Optimum Neuron - Supported Models\n")
-            f.write(f"**version: {version.__version__}**\n")
+            f.write(f"**version: {version.__version__}**  \n")
             f.write("Models marked with <font style='color: red;'><b>[TP]</b></font> support **Tensor Parallelism** for training and inference\n")
             f.write("## Models/tasks for training\n")
             f.write(f"{training_models()}\n")
