@@ -1,10 +1,11 @@
 # How to reduce costs and improve performance of your Machine Learning (ML) workloads?
 ## AWS Machine Learning Purpose-built Accelerators Tutorial
 
-Supposing you have a **business challenge** to address which requires custom ML models. You need to prepare your dataset, train, deploy your models and integrate them with your application (eventually automate this whole process). And, in the end, you need a cost-optimized solution that fits into your budget. So, this tutorial can help you.
+In this workshop you'll learn how to use [AWS Trainium](https://aws.amazon.com/machine-learning/trainium/) and [AWS Inferentia](https://aws.amazon.com/machine-learning/inferentia/) with [Amazon SageMaker](https://aws.amazon.com/sagemaker/) and [Hugging Face Optimum Neuron](https://huggingface.co/docs/optimum-neuron/index), to optimize your ML workloads! You'll also learn a new methodology to map/qualify/implement end2end solutions for different business challenges. A **top-down** approach that starts with the **use case/business challenge** identification/mapping and ends with a trained model deployed as an API, which can be then integrated to your application.
 
-In this tutorial you'll learn how to use [AWS Trainium](https://aws.amazon.com/machine-learning/trainium/) and [AWS Inferentia](https://aws.amazon.com/machine-learning/inferentia/) with [Amazon SageMaker](https://aws.amazon.com/sagemaker/) and [Hugging Face Optimum Neuron](https://huggingface.co/docs/optimum-neuron/index), to optimize your ML workloads! It has a **top-down** approach, which starts with the **use case/business challenge** identification/mapping and ends with a trained model deployed as an API which can be then integrated to your application. The picture bellow shows the proposed activities you need to follow in order to implement your solution:  
+Supposing you have a **business challenge** to address, which requires custom ML models. You need to prepare a dataset, train/deploy your models and finally integrate these models to your application (eventually automate this whole process). And, in the end, you expect to have a cost-optimized solution that fits into your budget.
 
+The picture bellow shows the steps of the proposed methodology you need to follow in order to successfuly apply it to your own business problem:
 <p align="center">
   <img src="purpose-built-accelerators/docs/imgs/01_activities.png"></img>
 </p>
@@ -39,24 +40,18 @@ The following table brings a list of common use cases (framed as questions) and 
 
 ### 1.1) Available Tasks
 
-|Training|Inference|
+|Task|Description|
 |:-|:-|
-|SequenceClassification|text-classification|
-||token-classification|
-|PreTraining||
-|MultipleChoice|multiple-choice|
-|TokenClassification||
-|MaskedLM|fill-mask|
-|QuestionAnswering|question-answering|
-|CausalLM|text-generation|
-|ConditionalGeneration||
-|NextSentencePrediction||
-|MaskedImageModeling||
-|ImageClassification||
-||feature-extraction|
-||zero-shot-image-classification|
-||semantic-segmentation|
-||stable-diffusion|
+|SequenceClassification|Text classification - binary or multi class|
+|MultipleChoice|Given a context and multiple options, the model predicts which one is correct|
+|TokenClassification|Token classification assigns a label to individual tokens in a sentence. One of the most common token classification tasks is Named Entity Recognition (NER)|
+|MaskedLM|When the input text has a mask that needs to be replaced by a generated term|
+|QuestionAnswering|It answers questions bases on a context or on the acquired knowledge via training|
+|CausalLM|Causal language modeling predicts the next token in a sequence of tokens, and the model can only attend to tokens on the left. This means the model cannot see future tokens|
+|ConditionalGeneration|Fills a mask based on the conditions of the sentence|
+|NextSentencePrediction|NSP consists of giving the model two sentences, sentence A and sentence B. We then say, ‘hey Model, does sentence B come after sentence A?’ — and Model says either IsNextSentence or NotNextSentence.|
+|MaskedImageModeling|Predict masks of the objects in a given picture|
+|ImageClassification|Classifies (binary or multiclass) an image into different classes of objects|
 
 ## 2) HF Optimum Neuron - Supported Models
 
