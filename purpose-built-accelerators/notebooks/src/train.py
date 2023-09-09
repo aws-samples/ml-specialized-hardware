@@ -119,7 +119,7 @@ if __name__ == "__main__":
             save_strategy="steps",
             save_total_limit=1,
         )
-
+        training_args._frozen = False
         trainer = Trainer(
             model=model,
             args=training_args,
