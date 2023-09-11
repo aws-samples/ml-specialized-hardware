@@ -47,9 +47,8 @@ if __name__ == "__main__":
     parser.add_argument('--checkpoints-path', type=str, help="Path where we'll save the cache", default='/opt/ml/checkpoints')
     try:
         args, _ = parser.parse_known_args()
-
-        cache_dir = os.path.join(args.checkpoints_path, args.model_id)
-        os.makedirs(cache_dir, exist_ok=True)
+        
+        os.makedirs(args.checkpoints_path, exist_ok=True)
 
         if len(args.hf_token) > 0:
             print("HF token defined. Logging in...")
@@ -64,7 +63,7 @@ if __name__ == "__main__":
             format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         )
         os.environ['TOKENIZERS_PARALLELISM'] = 'false'
-        os.environ['NEURON_CC_FLAGS']=f"--cache_dir={cache_dir} --retry_failed_compilation"
+        os.environ['NEURON_CC_FLAGS']=f"--cache_dir={args.checkpoints_path} --retry_failed_compilation"
 
         from optimum.neuron import NeuronTrainer as Trainer
         from optimum.neuron import NeuronTrainingArguments as TrainingArguments
@@ -100,7 +99,7 @@ if __name__ == "__main__":
             return metric.compute()
 
         training_args = TrainingArguments(
-            evaluation_strategy="epoch",
+            evaluation_strategy="epoch" if not args.eval_dir is None else "no",
             learning_rate=args.learning_rate,
             weight_decay=args.weight_decay,
             bf16=args.bf16,
@@ -111,7 +110,7 @@ if __name__ == "__main__":
             zero_1=args.zero_1,
 
             per_device_train_batch_size=args.train_batch_size,
-            per_device_eval_batch_size=args.eval_batch_size,
+            per_device_eval_batch_size=args.eval_batch_size if not args.eval_dir is None else None,
             logging_dir=f"{args.output_data_dir}/logs",
             logging_strategy="steps",
             logging_steps=500,
@@ -119,7 +118,7 @@ if __name__ == "__main__":
             save_strategy="steps",
             save_total_limit=1,
         )
-
+        training_args._frozen = False
         trainer = Trainer(
             model=model,
             args=training_args,
