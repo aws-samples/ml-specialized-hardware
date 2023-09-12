@@ -35,7 +35,7 @@ if __name__ == "__main__":
     parser.add_argument("--bf16", type=bool, default=True)
 
     # hugging face hub
-    parser.add_argument("--hf_token", type=str, default='')
+    parser.add_argument("--hf_token", type=str, default=None)
 
     # Data, model, and output directories
     parser.add_argument("--output_data_dir", type=str, default=os.environ["SM_OUTPUT_DATA_DIR"])
@@ -50,7 +50,7 @@ if __name__ == "__main__":
         
         os.makedirs(args.checkpoints_path, exist_ok=True)
 
-        if len(args.hf_token) > 0:
+        if not args.hf_token is None and len(args.hf_token) > 0:
             print("HF token defined. Logging in...")
             login(token=args.hf_token)
 
