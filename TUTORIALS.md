@@ -9,9 +9,11 @@ If you're looking for technical samples that show how to run specific models on 
 ## Tutorials/Reference implementations
 |Use Case|Description|
 |-|-|
-|[How to track people in video files?](tutorials/ObjectTrackingSageMakerGStreamer/)|CV/ML Pipeline to process video files in batch with SageMaker+Inferentia, GStreamer and Yolov7+ByteTrack|
-|[How to measure the similarity between two sentences?](tutorials/EmbeddingsFromTextWithBert/)|Compute the semantic similarity of two or more sentences by extracting their embeddings with SageMaker+Inferentia and HF Bert Case|
-|[How to create a mechanism to answer questions from a FAQ?](tutorials/QuestionAnsweringMachine/)|Fine tune a T5-ssm model (on SageMaker & Trainium) to build a Q&A mechanism, more powerful than a classic chatbot, to answer questions from a FAQ, sent by your customers|
+|[How to track people in video files?](tutorials/01_ObjectTrackingSageMakerGStreamer/)|CV/ML Pipeline to process video files in batch with SageMaker+Inferentia, GStreamer and Yolov7+ByteTrack|
+|[How to measure the similarity between two sentences?](tutorials/02_EmbeddingsFromTextWithBert/)|Compute the semantic similarity of two or more sentences by extracting their embeddings with SageMaker+Inferentia and HF Bert Case|
+|[How to create a mechanism to answer questions from a FAQ?](tutorials/03_QuestionAnsweringMachine/)|Fine tune a T5-ssm model (on SageMaker & Trainium) to build a Q&A mechanism, more powerful than a classic chatbot, to answer questions from a FAQ, sent by your customers|
+|[How to generate images based on a text input?](tutorials/04_ImageGenerationWithSDXL/)|Deploy an SDXL model to inferentia 2 + SageMaker using HF Optimum Neuron|
+|[How to create a really fast question answering mechanism?](tutorials/05_FastQuestionAnsweringWithBertQA/)|Deploy a BertQA model to Inferentia1 and SageMaker to build a fast and cheap Q&A mechanism|
 
 ## Contributing
 If you have a question related to a business challenge that must be answered by an accelerated AI/ML solution, like the content in this repo, then you can contribute. You can just open an issue with your question or if you have the skills, implement a solution (tutorial, workshop, etc.) using Jupyter notebooks (for SageMaker Studio or Notebook Instances) and create a pull request. We appreciate your help.
