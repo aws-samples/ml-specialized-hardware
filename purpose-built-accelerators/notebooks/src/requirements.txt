@@ -3,7 +3,7 @@ yarl==1.9.2
 torch==1.13.1
 mpmath==1.3.0
 xxhash==3.3.0
-aiohttp==3.8.5
+aiohttp==3.8.6
 evaluate==0.4.0
 optimum==1.11.2
 pyarrow==12.0.1
