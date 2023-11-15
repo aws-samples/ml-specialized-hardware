@@ -15,16 +15,12 @@ import traceback
 import optimum.neuron
 from transformers import AutoTokenizer
 
-TASK="<<TASK>>"
-
 def model_fn(model_dir, context=None):
-    global TASK
-    if "TASK" in TASK: raise Exception("Invalid TASK. You need to invoke the compilation job once to set TASK variable")
+    task = os.environ.get("TASK")
+    if task is None: raise Exception("Invalid TASK. You need to invoke the compilation job once to set TASK variable")
         
-    NeuronModel = eval(f"optimum.neuron.NeuronModelFor{TASK}")
-    
+    NeuronModel = eval(f"optimum.neuron.NeuronModelFor{task}")
     tokenizer = AutoTokenizer.from_pretrained(model_dir)
-    
     model = NeuronModel.from_pretrained(model_dir)
     return model,tokenizer
 
@@ -58,47 +54,35 @@ if __name__ == "__main__":
     parser.add_argument("--model_dir", type=str, default=os.environ["SM_MODEL_DIR"])    
     parser.add_argument("--checkpoint_dir", type=str, default=os.environ["SM_CHANNEL_CHECKPOINT"])
     
-    try:
-        args, _ = parser.parse_known_args()
-        
-        # Set up logging        
-        logging.basicConfig(
-            level=logging.getLevelName("DEBUG"),
-            handlers=[logging.StreamHandler(sys.stdout)],
-            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        )
-        logger = logging.getLogger(__name__)
-        logger.info(args)
+    args, _ = parser.parse_known_args()
 
-        NeuronModel = eval(f"optimum.neuron.NeuronModel{'For' + args.task if len(args.task) > 0 else ''}")
-        logger.info(f"Checkpoint files: {os.listdir(args.checkpoint_dir)}")
-        
-        model_path = args.checkpoint_dir
-        if args.is_model_compressed:
-            logger.info("Decompressing model file...")
-            with tarfile.open(os.path.join(args.checkpoint_dir, "model.tar.gz"), 'r:gz') as tar:
-                tar.extractall(os.path.join(args.checkpoint_dir, "model"))
-            model_path = os.path.join(args.checkpoint_dir, "model")
-            logger.info(f"Done! Model path: {model_path}")
-            logger.info(f"Model path files: {os.listdir(model_path)}")
-        
-        input_shapes = json.loads(args.input_shapes)
-        model = NeuronModel.from_pretrained(model_path, export=True, dynamic_batch_size=args.dynamic_batch_size, **input_shapes)
-        model.save_pretrained(args.model_dir)
+    # Set up logging        
+    logging.basicConfig(
+        level=logging.getLevelName("DEBUG"),
+        handlers=[logging.StreamHandler(sys.stdout)],
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
+    logger = logging.getLogger(__name__)
+    logger.info(args)
 
-        code_path = os.path.join(args.model_dir, 'code')
-        os.makedirs(code_path, exist_ok=True)
-        
-        with open(__file__, 'r') as f:
-            content = f.read()
-            content = content.replace("<<TASK>>", args.task)
-            with open(os.path.join(code_path, "inference.py"), "w") as i:
-                i.write(content)
-        shutil.copyfile('requirements.txt', os.path.join(code_path, 'requirements.txt'))
-    except Exception as e:
-        print(traceback.format_exc())
-        sys.exit(1)
-        
-    finally:
-        print("Done! ", sys.exc_info())
-        sys.exit(0)
+    NeuronModel = eval(f"optimum.neuron.NeuronModel{'For' + args.task if len(args.task) > 0 else ''}")
+    logger.info(f"Checkpoint files: {os.listdir(args.checkpoint_dir)}")
+
+    model_path = args.checkpoint_dir
+    if args.is_model_compressed:
+        logger.info("Decompressing model file...")
+        with tarfile.open(os.path.join(args.checkpoint_dir, "model.tar.gz"), 'r:gz') as tar:
+            tar.extractall(os.path.join(args.checkpoint_dir, "model"))
+        model_path = os.path.join(args.checkpoint_dir, "model")
+        logger.info(f"Done! Model path: {model_path}")
+        logger.info(f"Model path files: {os.listdir(model_path)}")
+
+    input_shapes = json.loads(args.input_shapes)
+    model = NeuronModel.from_pretrained(model_path, export=True, dynamic_batch_size=args.dynamic_batch_size, **input_shapes)
+    model.save_pretrained(args.model_dir)
+
+    code_path = os.path.join(args.model_dir, 'code')
+    os.makedirs(code_path, exist_ok=True)
+
+    shutil.copy(__file__, os.path.join(code_path, "inference.py"))
+    shutil.copy('requirements.txt', os.path.join(code_path, 'requirements.txt'))

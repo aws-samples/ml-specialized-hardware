@@ -1,4 +1,4 @@
 datasets
 onnx>=1.14.0
-transformers==4.30.0
-optimum-neuron==0.0.8
+transformers==4.33.1
+optimum-neuron==0.0.13

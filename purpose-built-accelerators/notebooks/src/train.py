@@ -45,107 +45,98 @@ if __name__ == "__main__":
     parser.add_argument("--eval_dir", type=str, default=os.environ.get("SM_CHANNEL_EVAL", None))
 
     parser.add_argument('--checkpoints-path', type=str, help="Path where we'll save the cache", default='/opt/ml/checkpoints')
-    try:
-        args, _ = parser.parse_known_args()
-        
-        os.makedirs(args.checkpoints_path, exist_ok=True)
 
-        if not args.hf_token is None and len(args.hf_token) > 0:
-            print("HF token defined. Logging in...")
-            login(token=args.hf_token)
+    args, _ = parser.parse_known_args()
+    os.makedirs(args.checkpoints_path, exist_ok=True)
 
-        # Set up logging
-        logger = logging.getLogger(__name__)
+    if not args.hf_token is None and len(args.hf_token) > 0:
+        print("HF token defined. Logging in...")
+        login(token=args.hf_token)
 
-        logging.basicConfig(
-            level=logging.getLevelName("INFO"),
-            handlers=[logging.StreamHandler(sys.stdout)],
-            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        )
-        os.environ['TOKENIZERS_PARALLELISM'] = 'false'
-        os.environ['NEURON_CC_FLAGS']=f"--cache_dir={args.checkpoints_path} --retry_failed_compilation"
+    # Set up logging
+    logger = logging.getLogger(__name__)
 
-        from optimum.neuron import NeuronTrainer as Trainer
-        from optimum.neuron import NeuronTrainingArguments as TrainingArguments
+    logging.basicConfig(
+        level=logging.getLevelName("INFO"),
+        handlers=[logging.StreamHandler(sys.stdout)],
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
+    os.environ['TOKENIZERS_PARALLELISM'] = 'false'
+    os.environ['NEURON_CC_FLAGS']=f"--cache_dir={args.checkpoints_path} --retry_failed_compilation"
 
-        Collator = eval(f"transformers.{args.collator}")
-        AutoModel = eval(f"transformers.AutoModel{'For' + args.task if len(args.task) > 0 else ''}")
+    from optimum.neuron import NeuronTrainer as Trainer
+    from optimum.neuron import NeuronTrainingArguments as TrainingArguments
 
-        train_dataset=load_from_disk(args.training_dir)
-        eval_dataset=load_from_disk(args.eval_dir) if not args.eval_dir is None else None
+    Collator = eval(f"transformers.{args.collator}")
+    AutoModel = eval(f"transformers.AutoModel{'For' + args.task if len(args.task) > 0 else ''}")
 
-        tokenizer = AutoTokenizer.from_pretrained(args.model_id)
-        tokenizer.pad_token = tokenizer.eos_token
-        tokenizer.model_max_length = args.max_sen_len
+    train_dataset=load_from_disk(args.training_dir)
+    eval_dataset=load_from_disk(args.eval_dir) if not args.eval_dir is None else None
 
-        data_collator = Collator(return_tensors="pt")
-        model = AutoModel.from_pretrained(args.model_id, trust_remote_code=True) # TODO: add a hyperparameter with model params
-        model.config.output_attentions == True
+    tokenizer = AutoTokenizer.from_pretrained(args.model_id)
+    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.model_max_length = args.max_sen_len
 
-        def preprocess_logits_for_metrics(logits, labels):
-            if isinstance(logits, tuple):
-                # Depending on the model and config, logits may contain extra tensors,
-                # like past_key_values, but logits always come first
-                logits = logits[0]
-            return logits.argmax(dim=-1)
+    data_collator = Collator(return_tensors="pt")
+    model = AutoModel.from_pretrained(args.model_id, trust_remote_code=True) # TODO: add a hyperparameter with model params
+    model.config.output_attentions == True
 
-        metric = evaluate.load("accuracy", module_type="metric")
-        def compute_metrics(eval_pred):
-            preds,labels = eval_pred
-            if len(preds.shape) == 1: preds = torch.IntTensor(preds).reshape(1,-1)
-            if len(labels.shape) == 1: labels = torch.IntTensor(labels).reshape(1,-1)    
-            for pred,label in zip(preds,labels):
-                metric.add_batch(predictions=pred, references=label)
-            return metric.compute()
+    def preprocess_logits_for_metrics(logits, labels):
+        if isinstance(logits, tuple):
+            # Depending on the model and config, logits may contain extra tensors,
+            # like past_key_values, but logits always come first
+            logits = logits[0]
+        return logits.argmax(dim=-1)
 
-        training_args = TrainingArguments(
-            evaluation_strategy="epoch" if not args.eval_dir is None else "no",
-            learning_rate=args.learning_rate,
-            weight_decay=args.weight_decay,
-            bf16=args.bf16,
-            num_train_epochs=args.epochs,
-            output_dir=args.checkpoints_path,
-            overwrite_output_dir=True,
-            tensor_parallel_size=args.tensor_parallel_size,
-            zero_1=args.zero_1,
+    metric = evaluate.load("accuracy", module_type="metric")
+    def compute_metrics(eval_pred):
+        preds,labels = eval_pred
+        if len(preds.shape) == 1: preds = torch.IntTensor(preds).reshape(1,-1)
+        if len(labels.shape) == 1: labels = torch.IntTensor(labels).reshape(1,-1)    
+        for pred,label in zip(preds,labels):
+            metric.add_batch(predictions=pred, references=label)
+        return metric.compute()
 
-            per_device_train_batch_size=args.train_batch_size,
-            per_device_eval_batch_size=args.eval_batch_size if not args.eval_dir is None else None,
-            logging_dir=f"{args.output_data_dir}/logs",
-            logging_strategy="steps",
-            logging_steps=500,
-            save_steps=1000,
-            save_strategy="steps",
-            save_total_limit=1,
-        )
-        training_args._frozen = False
-        trainer = Trainer(
-            model=model,
-            args=training_args,
-            train_dataset=train_dataset,
-            compute_metrics=compute_metrics,
-            preprocess_logits_for_metrics=preprocess_logits_for_metrics,
-            eval_dataset=eval_dataset,
-            data_collator=data_collator,
-        )
-        trainer.train()
+    training_args = TrainingArguments(
+        evaluation_strategy="epoch" if not args.eval_dir is None else "no",
+        learning_rate=args.learning_rate,
+        weight_decay=args.weight_decay,
+        bf16=args.bf16,
+        num_train_epochs=args.epochs,
+        output_dir=args.checkpoints_path,
+        overwrite_output_dir=True,
+        tensor_parallel_size=args.tensor_parallel_size,
+        zero_1=args.zero_1,
 
-        if not args.eval_dir is None:
-            eval_results = trainer.evaluate()
+        per_device_train_batch_size=args.train_batch_size,
+        per_device_eval_batch_size=args.eval_batch_size if not args.eval_dir is None else None,
+        logging_dir=f"{args.output_data_dir}/logs",
+        logging_strategy="steps",
+        logging_steps=500,
+        save_steps=1000,
+        save_strategy="steps",
+        save_total_limit=1,
+    )
+    trainer = Trainer(
+        model=model,
+        args=training_args,
+        train_dataset=train_dataset,
+        compute_metrics=compute_metrics,
+        preprocess_logits_for_metrics=preprocess_logits_for_metrics,
+        eval_dataset=eval_dataset,
+        data_collator=data_collator,
+    )
+    trainer.train()
 
-            # writes eval result to file which can be accessed later in s3 ouput
-            with open(os.path.join(args.output_data_dir, "eval_results.txt"), "w") as writer:
-                print(f"***** Eval results *****")
-                for key, value in sorted(eval_results.items()):
-                    writer.write(f"{key} = {value}\n")
+    if not args.eval_dir is None:
+        eval_results = trainer.evaluate()
 
-        # save artifacts that will be uploaded to S3
-        trainer.save_model(args.model_dir)
-        tokenizer.save_pretrained(args.model_dir)
-        
-    except Exception as e:
-        print(traceback.format_exc())
-        sys.exit(1)
-    finally:
-        print("Done! ", sys.exc_info())
-        sys.exit(0)
+        # writes eval result to file which can be accessed later in s3 ouput
+        with open(os.path.join(args.output_data_dir, "eval_results.txt"), "w") as writer:
+            print(f"***** Eval results *****")
+            for key, value in sorted(eval_results.items()):
+                writer.write(f"{key} = {value}\n")
+
+    # save artifacts that will be uploaded to S3
+    trainer.save_model(args.model_dir)
+    tokenizer.save_pretrained(args.model_dir)
