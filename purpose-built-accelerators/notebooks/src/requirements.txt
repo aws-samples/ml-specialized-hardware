@@ -1,9 +1,7 @@
 --extra-index-url https://pip.repos.neuron.amazonaws.com
-evaluate==0.4.0
-diffusers==0.21.4
+evaluate==0.4.1
 accelerate==0.23.0
-scikit-learn==1.3.0
-transformers==4.33.1
-optimum-neuron==0.0.13
-neuronx-distributed==0.5.0
-transformers-neuronx==0.8.268
+transformers==4.36.2
+optimum-neuron==0.0.20
+neuronx-distributed==0.6.0
+transformers-neuronx==0.9.474

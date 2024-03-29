@@ -5,7 +5,6 @@ import os
 import sys
 import torch
 import random
-import logging
 import argparse
 import evaluate
 import importlib
@@ -14,7 +13,9 @@ import transformers
 
 from huggingface_hub import login
 from datasets import load_from_disk
-from transformers import AutoTokenizer, is_torch_tpu_available
+from transformers import AutoTokenizer
+from optimum.neuron import NeuronTrainer as Trainer
+from optimum.neuron import NeuronTrainingArguments as TrainingArguments
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -53,20 +54,6 @@ if __name__ == "__main__":
         print("HF token defined. Logging in...")
         login(token=args.hf_token)
 
-    # Set up logging
-    logger = logging.getLogger(__name__)
-
-    logging.basicConfig(
-        level=logging.getLevelName("INFO"),
-        handlers=[logging.StreamHandler(sys.stdout)],
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    )
-    os.environ['TOKENIZERS_PARALLELISM'] = 'false'
-    os.environ['NEURON_CC_FLAGS']=f"--cache_dir={args.checkpoints_path} --retry_failed_compilation"
-
-    from optimum.neuron import NeuronTrainer as Trainer
-    from optimum.neuron import NeuronTrainingArguments as TrainingArguments
-
     Collator = eval(f"transformers.{args.collator}")
     AutoModel = eval(f"transformers.AutoModel{'For' + args.task if len(args.task) > 0 else ''}")
 
@@ -79,23 +66,6 @@ if __name__ == "__main__":
 
     data_collator = Collator(return_tensors="pt")
     model = AutoModel.from_pretrained(args.model_id, trust_remote_code=True) # TODO: add a hyperparameter with model params
-    model.config.output_attentions == True
-
-    def preprocess_logits_for_metrics(logits, labels):
-        if isinstance(logits, tuple):
-            # Depending on the model and config, logits may contain extra tensors,
-            # like past_key_values, but logits always come first
-            logits = logits[0]
-        return logits.argmax(dim=-1)
-
-    metric = evaluate.load("accuracy", module_type="metric")
-    def compute_metrics(eval_pred):
-        preds,labels = eval_pred
-        if len(preds.shape) == 1: preds = torch.IntTensor(preds).reshape(1,-1)
-        if len(labels.shape) == 1: labels = torch.IntTensor(labels).reshape(1,-1)    
-        for pred,label in zip(preds,labels):
-            metric.add_batch(predictions=pred, references=label)
-        return metric.compute()
 
     training_args = TrainingArguments(
         evaluation_strategy="epoch" if not args.eval_dir is None else "no",
@@ -121,22 +91,10 @@ if __name__ == "__main__":
         model=model,
         args=training_args,
         train_dataset=train_dataset,
-        compute_metrics=compute_metrics,
-        preprocess_logits_for_metrics=preprocess_logits_for_metrics,
         eval_dataset=eval_dataset,
         data_collator=data_collator,
     )
     trainer.train()
-
-    if not args.eval_dir is None:
-        eval_results = trainer.evaluate()
-
-        # writes eval result to file which can be accessed later in s3 ouput
-        with open(os.path.join(args.output_data_dir, "eval_results.txt"), "w") as writer:
-            print(f"***** Eval results *****")
-            for key, value in sorted(eval_results.items()):
-                writer.write(f"{key} = {value}\n")
-
     # save artifacts that will be uploaded to S3
     trainer.save_model(args.model_dir)
     tokenizer.save_pretrained(args.model_dir)
