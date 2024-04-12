@@ -9,6 +9,7 @@ import argparse
 import evaluate
 import importlib
 import traceback
+import subprocess
 import transformers
 
 from huggingface_hub import login
@@ -53,6 +54,9 @@ if __name__ == "__main__":
     if not args.hf_token is None and len(args.hf_token) > 0:
         print("HF token defined. Logging in...")
         login(token=args.hf_token)
+        
+        cmd = f"optimum-cli neuron cache set {os.environ['CUSTOM_CACHE_REPO']}"
+        subprocess.check_call(cmd.split(' '))
 
     Collator = eval(f"transformers.{args.collator}")
     AutoModel = eval(f"transformers.AutoModel{'For' + args.task if len(args.task) > 0 else ''}")

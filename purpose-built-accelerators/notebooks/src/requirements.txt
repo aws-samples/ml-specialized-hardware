@@ -2,6 +2,6 @@
 evaluate==0.4.1
 accelerate==0.23.0
 transformers==4.36.2
-optimum-neuron==0.0.20
-neuronx-distributed==0.6.0
-transformers-neuronx==0.9.474
+optimum-neuron==0.0.21
+neuronx-distributed==0.7.0
+transformers-neuronx==0.10.0.21
