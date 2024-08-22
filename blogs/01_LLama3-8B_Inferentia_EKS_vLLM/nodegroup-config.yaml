@@ -1,0 +1,28 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: genai
+  region: us-east-1
+  version: "1.30"
+    
+managedNodeGroups:
+  - name: neuron-group
+    instanceType: inf2.48xlarge
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 1
+    volumeSize: 500
+    ami: ami-0077f86889fb430bf
+    amiFamily: AmazonLinux2
+    iam:
+      attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+
+    overrideBootstrapCommand: |
+      #!/bin/bash
+
+      /etc/eks/bootstrap.sh genai
