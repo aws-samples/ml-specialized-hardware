@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neuronx-vllm-deployment
+  labels:
+    app: neuronx-vllm
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: neuronx-vllm
+  template:
+    metadata:
+      labels:
+        app: neuronx-vllm
+    spec:
+      schedulerName: my-scheduler
+      containers:
+      - name: neuronx-vllm
+        image: <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/vllm-neuron:latest
+        resources:
+          limits:
+            cpu: 32
+            memory: "64G"
+            aws.amazon.com/neuroncore: "8"
+          requests:
+            cpu: 32
+            memory: "64G"
+            aws.amazon.com/neuroncore: "8"
+        ports:
+        - containerPort: 8000
+        env:
+        - name: HF_TOKEN
+          value: <HF_TOKEN>
+        - name: FI_EFA_FORK_SAFE
+          value: "1"
+        args:
+        - "--model"
+        - "meta-llama/Meta-Llama-3-8B"
+        - "--tensor-parallel-size"
+        - "8"
+        - "--max-num-seqs"
+        - "8"
+        - "--max-model-len"
+        - "8192"
+        - "--block-size"
+        - "8192"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 1800
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 5
+
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 1800
+          periodSeconds: 15
+          timeoutSeconds: 5
+          failureThreshold: 5
+
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 1800
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 180 
