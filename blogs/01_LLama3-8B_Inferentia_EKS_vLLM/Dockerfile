@@ -1,4 +1,4 @@
-FROM public.ecr.aws/neuron/pytorch-inference-neuronx:2.1.2-neuronx-py310-sdk2.19.0-ubuntu20.04
+FROM public.ecr.aws/neuron/pytorch-inference-neuronx:2.1.2-neuronx-py310-sdk2.19.1-ubuntu20.04
 
 # Clone the vllm repository
 RUN git clone https://github.com/vllm-project/vllm.git
@@ -11,14 +11,14 @@ RUN git checkout v0.5.0
 ENV VLLM_TARGET_DEVICE=neuron
 
 # Install the dependencies
-RUN python3 -m pip install -U -r requirements-neuron.txt
-RUN python3 -m pip install .
+RUN pip install -U -r requirements-neuron.txt
+RUN pip install -e .
 
 # Modify the arg_utils.py file
-RUN sed -i 's/choices=\[8, 16, 32\]/choices=\[8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192\]/' vllm/engine/arg_utils.py
+RUN sed -i "/parser.add_argument('--block-size',/ {N;N;N;N;N;s/\[8, 16, 32\]/[8, 16, 32, 128, 256, 512, 1024, 2048, 4096, 8192]/}" vllm/engine/arg_utils.py
 
 # Install ray
-RUN python3 -m pip install ray
+RUN pip install ray
 RUN pip install pynvml
 
 # Set the entry point
