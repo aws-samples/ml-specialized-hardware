@@ -87,7 +87,7 @@ if __name__ == "__main__":
         logging_dir=f"{args.output_data_dir}/logs",
         logging_strategy="steps",
         logging_steps=500,
-        save_steps=1000,
+        save_steps=2000,
         save_strategy="steps",
         save_total_limit=1,
     )
