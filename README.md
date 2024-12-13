@@ -4,10 +4,12 @@ In this repo you'll learn how to use [AWS Trainium](https://aws.amazon.com/machi
 
 ### Workshops
 
-|Description|
-|:-|
-|[How to create a spam classifier?](workshops/01_FineTuneSpamClassifier)|
-|[How to adapt a pre-trained model to your own business needs and add a conversational interface](workshops/02_DomainAdaptation)|
+|Title||
+|:-|:-|
+|[Fine-tune and deploy LLM from Hugging Face on AWS Trainium and AWS Inferentia](workshops/01_FineTuneSpamClassifier)|Learn how to create a spam classifier that can be easily integrated to your own application|
+|[Adapting LLMs for domain-aware applications with AWS Trainium post-training](workshops/02_DomainAdaptation)|Learn how to adapt a pre-trained model to your own business needs and add a conversational interface your customers can interact with|
+
+These workshops are supported by **AWS Workshop Studio**
 
 ### Tutorials
 
