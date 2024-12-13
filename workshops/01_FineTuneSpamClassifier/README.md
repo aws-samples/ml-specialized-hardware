@@ -7,7 +7,7 @@ Supposing you have a **business challenge** to address, which requires custom ML
 
 The picture bellow shows the steps of the proposed methodology you need to follow in order to successfuly apply it to your own business problem:
 <p align="center">
-  <img src="/workshops/01_FineTune_SpamClassifier/docs/imgs/01_activities.png"></img>
+  <img src="docs/imgs/01_activities.png"></img>
 </p>
 
 <table>
