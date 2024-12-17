@@ -2,6 +2,9 @@
 
 In this repo you'll learn how to use [AWS Trainium](https://aws.amazon.com/machine-learning/trainium/) and [AWS Inferentia](https://aws.amazon.com/machine-learning/inferentia/) with [Amazon SageMaker](https://aws.amazon.com/sagemaker/) and [Hugging Face Optimum Neuron](https://huggingface.co/docs/optimum-neuron/index), to optimize your ML workloads! Here you find workshops, tutorials, blog post content, etc. you can use to learn and inspire your own solution.
 
+
+The content you find here is focused on particular use cases. If you're looking for standalone model samples for inference and training, please check this other repo: https://github.com/aws-neuron/aws-neuron-samples. 
+
 ### Workshops
 
 |Title||
