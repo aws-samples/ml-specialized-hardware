@@ -22,10 +22,10 @@ LLM domain adaptation is useful in various scenarios where domain-specific knowl
 **Reinforcement Learning from Human Feedback (RLHF)**: This technique involves providing human feedback (e.g., ratings, comparisons, or corrections) to the language model during the fine-tuning process. The model is trained to generate outputs that align with the human feedback, effectively shaping its behavior according to human preferences. RLHF can be particularly useful when you want to imbue the language model with specific traits, such as factuality, safety, or ethical behavior.
    - Use case: Training a language model for customer service applications, where it needs to provide helpful, polite, and factual responses.
 
-**Denoising Pre-training Objective (DPO)**: DPO is a self-supervised pre-training technique that aims to improve the language model's understanding of the target domain by training it on corrupted input data from that domain. The model learns to reconstruct the original, uncorrupted input, thereby capturing domain-specific patterns and knowledge.
+**Direct Preference Optimization (DPO)**: DPO is stable, performant, and computationally lightweight, eliminating the need for sampling from the LM during fine-tuning or performing significant hyperparameter tuning.
    - Use case: Pre-training a language model on corrupted scientific paper abstracts to improve its performance on tasks related to scientific literature, such as question answering or text summarization.
 
-**Orthogonal Random Projection Objective (ORPO)**: ORPO is a self-supervised training technique that aims to enhance the language model's ability to understand and generate text from the target domain. It involves projecting the input text into a random subspace and training the model to predict the original input from the projected representation.
+**Odds Ratio Preference Optimization (ORPO)**: ORPO is a simple and novel monolithic alignment method technique which efficiently penalizes the model from learning undesired generation styles during SFT.
    - Use case: Adapting a general-purpose language model to the financial domain by training it with ORPO on a corpus of financial reports and news articles.
 
 <p align="center">
