@@ -38,9 +38,9 @@ Duration: Approximately 90 minutes
 Workshop Outline
 
 1. Environment Setup
-  * Configuring your Trn1 or Inf2 instance
-  * Installing required packages
-  * Verifying your setup
+   * Configuring your Trn1 or Inf2 instance
+   * Installing required packages
+   * Verifying your setup
 
 2. Implementing Your First NKI Kernel
    * Understanding the NKI programming model
