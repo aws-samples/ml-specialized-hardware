@@ -25,6 +25,7 @@ These workshops are supported by **AWS Workshop Studio**
 |[inf1 - Answer questions given a context](tutorials/05_FastQuestionAnsweringWithBertQA)|
 |[trn1 - Fine-tune a LLM using distributed training](tutorials/06_FinetuneLLMs)|
 |[inf2 - Deploy a LLM to HF TGI](tutorials/07_DeployToInferentiaWithTGI)|
+|[inf2 - Porting BART for Multi-Genre Natural Language Inference](tutorials/08_PortingBARTModel)|
 
 ### Blog posts content
 |Description|
