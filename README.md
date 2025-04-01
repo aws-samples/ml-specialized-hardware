@@ -11,7 +11,7 @@ The content you find here is focused on particular use cases. If you're looking 
 |:-|:-|
 |[Fine-tune and deploy LLM from Hugging Face on AWS Trainium and AWS Inferentia](workshops/01_FineTuneSpamClassifier)|Learn how to create a spam classifier that can be easily integrated to your own application|
 |[Adapting LLMs for domain-aware applications with AWS Trainium post-training](workshops/02_DomainAdaptation)|Learn how to adapt a pre-trained model to your own business needs and add a conversational interface your customers can interact with|
-|[Adapting LLMs for domain-aware applications with AWS Trainium post-training](workshops/03_NKIWorkshop)|Learn how to use the Neuron Kernel Interface (NKI) to write kernels for Neuron accelerators|
+|[Building Custom Accelerator Kernels with AWS Neuron Kernel Interface (NKI)](workshops/03_NKIWorkshop)|Learn how to use the Neuron Kernel Interface (NKI) to write kernels for Neuron accelerators|
 
 
 These workshops are supported by **AWS Workshop Studio**
