@@ -15,7 +15,7 @@ NKI follows a three-phase programming model that gives developers explicit contr
 
 1. Load - Move data from device memory (HBM) to on-chip memory (SBUF)
    * Explicitly define which data to bring into fast on-chip memory
-   * Control memory access patterns to optimize bandwidth utilization\
+   * Control memory access patterns to optimize bandwidth utilization
    * Apply data transformations during loading if needed
 
 2. Compute - Perform operations using on-chip memory
