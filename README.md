@@ -23,7 +23,7 @@ These workshops are supported by **AWS Workshop Studio**
 |[inf1 - Extract embeddings from raw text](tutorials/01_EmbeddingsFromTextWithBert)|
 |[inf1 - Track objects in video streaming using CV](tutorials/02_ObjectTrackingSageMakerGStreamer)|
 |[inf1 - Create a closed question Q&A model](tutorials/03_QuestionAnsweringMachine)|
-|[ind2 - Generate images using SD](tutorials/04_ImageGenerationWithStableDiffusion)|
+|[inf2 - Generate images using SD](tutorials/04_ImageGenerationWithStableDiffusion)|
 |[inf1 - Answer questions given a context](tutorials/05_FastQuestionAnsweringWithBertQA)|
 |[trn1 - Fine-tune a LLM using distributed training](tutorials/06_FinetuneLLMs)|
 |[inf2 - Deploy a LLM to HF TGI](tutorials/07_DeployToInferentiaWithTGI)|
